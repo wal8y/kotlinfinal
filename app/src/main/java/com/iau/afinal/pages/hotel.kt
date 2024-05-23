@@ -119,58 +119,6 @@ fun LocationWebView(location: String) {
     }
 }
 
-@Composable
-fun HotelDetailsPage(hotelR: HotelR,navController:NavHostController,viewModel: MyViewModel) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            painter = painterResource(hotelR.image),
-            contentDescription = hotelR.name,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(240.dp)
-                .border(
-                    width = 10.dp,
-                    shape = RoundedCornerShape(10.dp),
-                    color = Color(0, 115, 205)
-                ),
-            alignment = Alignment.TopCenter
-        )
-        Text(
-            text = hotelR.name,
-            fontSize = 30.sp,
-            modifier = Modifier.padding(20.dp)
-        )
-        Stars(num = hotelR.stars, 30)
-        Text(hotelR.bio, modifier = Modifier.padding(20.dp))
-        LocationWebView(location = hotelR.location)
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Button(
-                onClick = {
-                    navController.navigate(Pages.hotels.name)
-                }
-            ) {
-                Text("Back")
-            }
-            Button(
-                onClick = {
-                    viewModel.deleteHotelFromFavorites(hotelR)
-                    navController.popBackStack()
-                }
-            ) {
-                Text("Remove from Favorite")
-            }
-        }
-    }
-}
 
 
 fun toLocation(locationString: String): Location {
