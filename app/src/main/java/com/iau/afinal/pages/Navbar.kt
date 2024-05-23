@@ -1,6 +1,7 @@
 package com.iau.afinal.pages
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,77 +29,41 @@ import kotlin.math.absoluteValue
 
 @Composable
 fun NavBar(navController: NavHostController, viewModel: MyViewModel) {
-    //BottomAppBar {
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White).padding(10.dp)
         ) {
-            NavButton(
+            FloatingActionButton(
                 onClick = {
                     viewModel.currentpage = 1
                     navController.navigate(Pages.hotels.name)
                 },
-                isSelected = viewModel.currentpage == 1,
-                icon = Icons.Default.List
-            )
-            NavButton(
+                modifier = Modifier.size(50.dp)
+                ,containerColor = Color(0,115,205)
+            ){
+                Icon(imageVector = Icons.Default.List, contentDescription = "list")
+            }
+            FloatingActionButton(
                 onClick = {
                     viewModel.currentpage = 0
                     navController.navigate(Pages.home.name)
                 },
-                isSelected = viewModel.currentpage == 0,
-                icon = Icons.Default.Home
-            )
-            NavButton(
-                onClick = {
-                    viewModel.currentpage = 3
-                    navController.navigate(Pages.fav.name)
-                },
-                isSelected = viewModel.currentpage == 3,
-                icon = Icons.Default.Favorite
-            )
-            NavButton(
+                modifier = Modifier.size(50.dp)
+                ,containerColor = Color(0,115,205)
+            ){
+                Icon(imageVector = Icons.Default.Home, contentDescription = "home")
+            }
+            FloatingActionButton(
                 onClick = {
                     viewModel.currentpage = 2
-                    navController.navigate(Pages.user.name)
+                    navController.navigate(Pages.fav.name)
                 },
-                isSelected = viewModel.currentpage == 2,
-                icon = Icons.Default.AccountCircle
-            )
+                modifier = Modifier.size(50.dp)
+                ,containerColor = Color(0,115,205)
+            ){
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "fav")
+            }
         }
-   // }
-}
-
-
-@Composable
-fun NavButton(
-    onClick: () -> Unit,
-    isSelected: Boolean,
-    icon: ImageVector
-) {
-    var size = 50.dp
-    var pad = 0.dp
-    val buttonColor by animateColorAsState(
-        if (isSelected) Color.DarkGray else Color.White,
-        animationSpec = tween(durationMillis = 700)
-    )
-    if (isSelected){
-        size = 60.dp
-        pad = 2.dp
-    }
-
-    FloatingActionButton(
-        onClick = onClick,
-        shape = MaterialTheme.shapes.extraLarge,
-        containerColor = buttonColor,
-        modifier = Modifier
-            .padding(horizontal = 18.dp)
-            .size(size).padding(bottom = pad)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = if (isSelected) Color.White else Color.DarkGray
-        )
-    }
 }

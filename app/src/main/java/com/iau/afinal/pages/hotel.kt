@@ -2,19 +2,23 @@ package com.iau.afinal.pages
 
 import android.location.Location
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -35,15 +39,15 @@ fun hotelPage(
     Name: String,
     imageResource: Int,
     bio: String,
-    location: Location,
+    location: String,
     stars: Int,
     navController: NavHostController,
     viewModel: MyViewModel
 ) {
     viewModel.currentpage == 0
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize().padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(imageResource),
@@ -51,15 +55,20 @@ fun hotelPage(
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp),
+                .height(240.dp)
+                .border(width = 10.dp,
+                    shape = RoundedCornerShape(10.dp),
+                    color = Color(0,115,205)
+                ),
             alignment= Alignment.TopCenter
         )
         Text(
             text = Name,
-            fontSize = 30.sp
+            fontSize = 30.sp,
+            modifier = Modifier.padding(20.dp)
             )
         Stars(num = stars,30)
-        Text(bio)
+        Text(bio, modifier = Modifier.padding(20.dp))
         LocationWebView(location = location)
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -74,15 +83,15 @@ fun hotelPage(
             }
             Button(
                 onClick = {
-                    val newl = fromLocation(location)
                     val favoriteHotel = HotelR(
                         name = Name,
                         image = imageResource,
                         bio = bio,
-                        location = newl,
+                        location = location,
                         stars = stars
                     )
                     viewModel.addHotelToFavorites(favoriteHotel)
+                    navController.popBackStack()
                 }
             ) {
                 Text("Add to Favorite")
@@ -92,8 +101,9 @@ fun hotelPage(
 }
 
 @Composable
-fun LocationWebView(location: Location) {
-    val hotel = LatLng(location.latitude, location.longitude)
+fun LocationWebView(location: String) {
+    val l = toLocation(location)
+    val hotel = LatLng(l.latitude, l.longitude)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(hotel, 14f)
     }
@@ -109,9 +119,59 @@ fun LocationWebView(location: Location) {
     }
 }
 
-fun fromLocation(location: Location): String {
-    return "${location.latitude},${location.longitude}"
+@Composable
+fun HotelDetailsPage(hotelR: HotelR,navController:NavHostController,viewModel: MyViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(hotelR.image),
+            contentDescription = hotelR.name,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(240.dp)
+                .border(
+                    width = 10.dp,
+                    shape = RoundedCornerShape(10.dp),
+                    color = Color(0, 115, 205)
+                ),
+            alignment = Alignment.TopCenter
+        )
+        Text(
+            text = hotelR.name,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(20.dp)
+        )
+        Stars(num = hotelR.stars, 30)
+        Text(hotelR.bio, modifier = Modifier.padding(20.dp))
+        LocationWebView(location = hotelR.location)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    navController.navigate(Pages.hotels.name)
+                }
+            ) {
+                Text("Back")
+            }
+            Button(
+                onClick = {
+                    viewModel.deleteHotelFromFavorites(hotelR)
+                    navController.popBackStack()
+                }
+            ) {
+                Text("Remove from Favorite")
+            }
+        }
+    }
 }
+
 
 fun toLocation(locationString: String): Location {
     val parts = locationString.split(",")

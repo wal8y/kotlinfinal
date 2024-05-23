@@ -20,6 +20,9 @@ interface ItemDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: HotelR)
 
+    @Query("SELECT * FROM items WHERE name = :name")
+    suspend fun getHotelByName(name: String): HotelR?
+
     @Update
     suspend fun update(item: HotelR)
 

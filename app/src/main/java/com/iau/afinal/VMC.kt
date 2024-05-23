@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.iau.afinal.data.HotelR
 import com.iau.afinal.MainActivity
+import com.iau.afinal.data.HotelRoomDatabase
 import com.iau.afinal.data.ItemsRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -22,9 +23,14 @@ class MyViewModel(private val itemsRepository: ItemsRepository) : ViewModel() {
     val favoriteHotels: StateFlow<List<HotelR>> = itemsRepository.getAllItemsStream()
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Lazily, emptyList())
 
-    fun addHotelToFavorites(hotel: HotelR) {
+     fun addHotelToFavorites(hotel: HotelR) {
         viewModelScope.launch {
             itemsRepository.insertItem(hotel)
+        }
+    }
+     fun deleteHotelFromFavorites(hotel: HotelR) {
+        viewModelScope.launch {
+            itemsRepository.deleteItem(hotel)
         }
     }
 }
@@ -43,7 +49,6 @@ fun CreationExtras.inventoryApplication(): HotelBrowser =
 enum class Pages{
     home,
     hotels,
-    user,
     fav,
     hotel
 }

@@ -8,7 +8,6 @@ import androidx.room.TypeConverters
 
 @Database(entities = [HotelR::class], version = 1, exportSchema = false)
 abstract class HotelRoomDatabase : RoomDatabase() {
-
     abstract fun itemDao(): ItemDao
 
     companion object {
@@ -17,7 +16,7 @@ abstract class HotelRoomDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): HotelRoomDatabase {
             return Instance ?: synchronized(this) {
-                Room.databaseBuilder(context, HotelRoomDatabase::class.java, "item_database")
+                Room.databaseBuilder(context, HotelRoomDatabase::class.java, "database")
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { Instance = it }

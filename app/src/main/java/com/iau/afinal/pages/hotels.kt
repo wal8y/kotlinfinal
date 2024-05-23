@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -54,7 +55,6 @@ data class Hotel(
 
 @Composable
 fun HotelsPage(navController: NavHostController, viewModel: MyViewModel) {
-    viewModel.currentpage == 1
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
@@ -89,14 +89,14 @@ fun HotelCard(hotel: Hotel, navController: NavHostController) {
             .background(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
-                        Color.Cyan,
-                        Color.Green
+                        Color(0,115,205),
+                        Color(0,155,205)
                     )
                 ),
                 shape = RoundedCornerShape(14.dp)
             )
             .border(
-                border = BorderStroke(4.dp, Color.DarkGray),
+                border = BorderStroke(4.dp, Color.Unspecified),
                 shape = RoundedCornerShape(14.dp)
             )
             .fillMaxWidth()
@@ -121,7 +121,7 @@ fun HotelCard(hotel: Hotel, navController: NavHostController) {
         Image(
             painter = painterResource(hotel.imageResource),
             contentDescription = hotel.Name,
-            modifier = Modifier.size(80.dp)
+            modifier = Modifier.size(80.dp).clip(RoundedCornerShape(22.dp))
         )
     }
 }

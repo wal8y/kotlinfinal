@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -40,7 +41,7 @@ import androidx.navigation.NavHostController
 import com.iau.afinal.MyViewModel
 import com.iau.afinal.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 @Composable
 fun home(navHostController: NavHostController , viewModel: MyViewModel){
     Scaffold(
@@ -50,24 +51,32 @@ fun home(navHostController: NavHostController , viewModel: MyViewModel){
                     .padding(5.dp)
                     .border(
                         border = BorderStroke(2.dp, Color.Black),
-                        shape = RoundedCornerShape(89.dp),
+                        shape = RoundedCornerShape(20.dp),
                     )
-                    .background(Color.LightGray, RoundedCornerShape(89.dp))
-                    .padding(16.dp)
-                ,
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            colors = listOf(
+                                Color(0,115,205),
+                                Color(0,155,205)
+                            )
+                        ),
+                        RoundedCornerShape(20.dp)
+                    )
+                    .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
                     modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Hello "+"user"+"\nWelcome to Otelista")
+                    Text("Welcome to Otelista\n\n", fontSize = 20.sp)
+                    Text(
+                        text = "You can also Checkout ...",
+                        fontSize = 22.sp,
+                        fontFamily = FontFamily.Monospace
+                    )
                 }
-                Image(
-                    modifier = Modifier.clip(RoundedCornerShape(50.dp))
-                        .size(100.dp),
-                    painter = painterResource(R.drawable.user),
-                    contentDescription = "user")
             } },
         bottomBar = { NavBar(navController = navHostController, viewModel = viewModel) }
     ) {
@@ -86,6 +95,18 @@ fun Recommendation(
         R.drawable.github_logo,
         R.drawable.codizy_logo,
         R.drawable.trendyol_logo,
+        R.drawable.hotels_logo,
+        R.drawable.github_logo,
+        R.drawable.codizy_logo,
+        R.drawable.trendyol_logo,
+        R.drawable.hotels_logo,
+        R.drawable.github_logo,
+        R.drawable.codizy_logo,
+        R.drawable.trendyol_logo,
+        R.drawable.hotels_logo,
+        R.drawable.github_logo,
+        R.drawable.codizy_logo,
+        R.drawable.trendyol_logo,
         R.drawable.hotels_logo
     )
     Box(
@@ -94,20 +115,6 @@ fun Recommendation(
         Column(
             modifier = Modifier.align(Alignment.Center)
         ) {
-            Row(
-                modifier = Modifier
-                    .background(Color.LightGray)
-                    .fillMaxWidth()
-                    .height(50.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Recommendations ...",
-                    fontSize = 22.sp,
-                    fontFamily = FontFamily.Monospace
-                )
-            }
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
                 contentPadding = contentPadding,
@@ -147,7 +154,7 @@ fun ImageWithWebView(imageResource: Int) {
             contentDescription = null,
             modifier = Modifier
                 .size(100.dp)
-                .clip(RoundedCornerShape(10.dp)),
+                .clip(RoundedCornerShape(15.dp)),
             contentScale = ContentScale.Fit
         )
     }

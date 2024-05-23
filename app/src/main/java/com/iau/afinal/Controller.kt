@@ -1,5 +1,6 @@
 package com.iau.afinal
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -11,9 +12,7 @@ import com.iau.afinal.pages.HotelsPage
 import com.iau.afinal.pages.home
 import com.iau.afinal.pages.hotelPage
 import com.iau.afinal.data.hotels
-import com.iau.afinal.pages.toLocation
-import com.iau.afinal.pages.user
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Controllers(navController: NavHostController = rememberNavController()) {
     val viewModel: MyViewModel = viewModel(factory = AppViewModelProvider.Factory)
@@ -32,7 +31,7 @@ fun Controllers(navController: NavHostController = rememberNavController()) {
                     Name = hotel.Name,
                     imageResource = hotel.imageResource,
                     bio = hotel.bio,
-                    location = toLocation(hotel.location),
+                    location = hotel.location,
                     stars = hotel.stars,
                     navController = navController,
                     viewModel = viewModel
@@ -41,9 +40,6 @@ fun Controllers(navController: NavHostController = rememberNavController()) {
         }
         composable(route = Pages.fav.name) {
             FavPage(navController= navController, viewModel)
-        }
-        composable(route = Pages.user.name) {
-            user(navController = navController, viewModel = viewModel)
         }
     }
 }
