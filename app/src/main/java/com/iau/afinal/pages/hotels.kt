@@ -1,6 +1,5 @@
 package com.iau.afinal.pages
 
-import android.location.Location
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -25,22 +24,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.room.PrimaryKey
-import com.iau.afinal.MyViewModel
+import com.iau.afinal.MainViewModel
 import com.iau.afinal.Pages
-import com.iau.afinal.R
+import com.iau.afinal.data.HotelR
 import com.iau.afinal.data.hotels
 
-val testLocation = "37.7749,122.4194"
 
 data class Hotel(
     @PrimaryKey(autoGenerate = true)
@@ -54,7 +55,10 @@ data class Hotel(
 )
 
 @Composable
-fun HotelsPage(navController: NavHostController, viewModel: MyViewModel) {
+fun HotelsPage(navController: NavHostController, viewModel: HotelsViewModel) {
+    val hotels = remember { mutableStateOf(hotels) }
+    val sortedBy = remember { mutableStateOf("") }
+
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
@@ -66,17 +70,64 @@ fun HotelsPage(navController: NavHostController, viewModel: MyViewModel) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            FilterOptions(onSortBySelected = { sortBy ->
+                sortedBy.value = sortBy
+                hotels.value = when (sortBy) {
+                    "A-Z" -> hotels.value.sortedBy { it.Name }
+                    "Stars" -> hotels.value.sortedByDescending { it.stars }
+                    else -> hotels.value
+                }
+            })
             LazyColumn(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(hotels) { hotel ->
-                    HotelCard(hotel,navController)
+                items(hotels.value) { hotel ->
+                    HotelCard(hotel, navController)
                 }
             }
             NavBar(navController = navController, viewModel = viewModel)
         }
+    }
+}
+
+@Composable
+fun FilterOptions(onSortBySelected: (String) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Sort By:",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(end = 8.dp)
+        )
+        FilterOption(
+            text = "A-Z",
+            onSelected = { onSortBySelected("A-Z") }
+        )
+        FilterOption(
+            text = "Stars",
+            onSelected = { onSortBySelected("Stars") }
+        )
+    }
+}
+
+@Composable
+fun FilterOption(text: String, onSelected: () -> Unit) {
+    Surface(
+        color = Color(0,115,205),
+        tonalElevation = 4.dp,
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.clickable(onClick = onSelected)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        )
     }
 }
 

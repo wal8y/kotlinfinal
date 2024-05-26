@@ -1,6 +1,8 @@
 package com.iau.afinal.pages
 
+import android.app.Activity
 import android.location.Location
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -17,8 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,7 +39,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.iau.afinal.MyViewModel
+import com.iau.afinal.MainViewModel
 import com.iau.afinal.Pages
 import com.iau.afinal.data.HotelR
 
@@ -51,7 +51,7 @@ fun hotelPage(
     location: String,
     stars: Int,
     navController: NavHostController,
-    viewModel: MyViewModel
+    viewModel: FavViewModel
 ) {
     val context = LocalContext.current
     val favoriteHotelsState = viewModel.favoriteHotels.collectAsState().value
@@ -108,7 +108,7 @@ fun hotelPage(
             ) {
                 Button(
                     onClick = {
-                        navController.navigate(Pages.hotels.name)
+                        navController.popBackStack()
                     }
                 ) {
                     Text("Back")
@@ -138,6 +138,7 @@ fun hotelPage(
         }
     }
 }
+
 
 @Composable
 fun LocationWebView(location: String) {

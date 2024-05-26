@@ -12,16 +12,20 @@ import com.iau.afinal.pages.HotelsPage
 import com.iau.afinal.pages.home
 import com.iau.afinal.pages.hotelPage
 import com.iau.afinal.data.hotels
+import com.iau.afinal.pages.FavViewModel
+import com.iau.afinal.pages.HotelsViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Controllers(navController: NavHostController = rememberNavController()) {
-    val viewModel: MyViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    val favViewModel: FavViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    val hotelsViewModel: HotelsViewModel = viewModel(factory = AppViewModelProvider.Factory)
     NavHost(navController = navController, startDestination = Pages.home.name) {
         composable(route = Pages.home.name) {
-            home(navHostController = navController , viewModel)
+            home(navHostController = navController, hotelsViewModel)
         }
         composable(route = Pages.hotels.name) {
-            HotelsPage(navController = navController, viewModel = viewModel)
+            HotelsPage(navController = navController, viewModel = hotelsViewModel)
         }
         composable(route = "${Pages.hotel.name}/{hotelName}") { backStackEntry ->
             val hotelName = backStackEntry.arguments?.getString("hotelName")
@@ -34,12 +38,12 @@ fun Controllers(navController: NavHostController = rememberNavController()) {
                     location = hotel.location,
                     stars = hotel.stars,
                     navController = navController,
-                    viewModel = viewModel
+                    viewModel = favViewModel
                 )
             }
         }
         composable(route = Pages.fav.name) {
-            FavPage(navController= navController, viewModel)
+            FavPage(navController = navController, viewModel = favViewModel)
         }
     }
 }

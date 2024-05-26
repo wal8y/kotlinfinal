@@ -2,7 +2,8 @@ package com.iau.afinal.data
 
 import com.iau.afinal.R
 import com.iau.afinal.pages.Hotel
-import com.iau.afinal.pages.testLocation
+
+val testLocation = "37.7749,122.4194"
 
 val hotels = listOf(
     Hotel(
@@ -16,19 +17,31 @@ val hotels = listOf(
         imageResource = R.drawable.bg,
         bio = "testing bio for this hotel",
         location = testLocation,
-        stars = 4
+        stars = 2
     ), Hotel(
         Name = "testing3",
         imageResource = R.drawable.bg,
         bio = "testing bio for this hotel",
         location = testLocation,
-        stars = 4
+        stars = 3
     ), Hotel(
         Name = "testing4",
         imageResource = R.drawable.bg,
         bio = "testing bio for this hotel",
         location = testLocation,
-        stars = 4
+        stars = 5
+    ), Hotel(
+        Name = "testing5",
+        imageResource = R.drawable.bg,
+        bio = "testing bio for this hotel",
+        location = testLocation,
+        stars = 2
+    ), Hotel(
+        Name = "testing6",
+        imageResource = R.drawable.bg,
+        bio = "testing bio for this hotel",
+        location = testLocation,
+        stars = 1
     ), Hotel(
         Name = "testing5",
         imageResource = R.drawable.bg,
@@ -40,25 +53,13 @@ val hotels = listOf(
         imageResource = R.drawable.bg,
         bio = "testing bio for this hotel",
         location = testLocation,
-        stars = 4
+        stars = 3
     ), Hotel(
         Name = "testing5",
         imageResource = R.drawable.bg,
         bio = "testing bio for this hotel",
         location = testLocation,
-        stars = 4
-    ), Hotel(
-        Name = "testing6",
-        imageResource = R.drawable.bg,
-        bio = "testing bio for this hotel",
-        location = testLocation,
-        stars = 4
-    ), Hotel(
-        Name = "testing5",
-        imageResource = R.drawable.bg,
-        bio = "testing bio for this hotel",
-        location = testLocation,
-        stars = 4
+        stars = 2
     ), Hotel(
         Name = "testing6",
         imageResource = R.drawable.bg,
