@@ -185,7 +185,7 @@ fun Stars(num: Int,size:Int) {
         repeat(5) { index ->
             Icon(
                 imageVector = Icons.Default.Star,
-                contentDescription = if (index < num) "Filled star" else "Empty star",
+                contentDescription ="star",
                 tint = if (index < num) Color.Yellow else Color.DarkGray,
                 modifier = Modifier.size(size.dp)
             )
